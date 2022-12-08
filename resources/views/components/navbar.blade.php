@@ -36,13 +36,20 @@
             </x-slot>
 
             <x-slot name="content">
-                <!-- Authentication -->
+                <!-- Logout si settings buttons-->
+                <form method="POST" action="{{ route('settings') }}">
+                    @csrf
+                    <x-dropdown-link :href="route('settings')" onclick="event.preventDefault();
+                            this.closest('form').submit();">
+                            {{ __('Settings') }}
+                    </x-dropdown-link>
+
+                </form>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-
                     <x-dropdown-link :href="route('logout')" onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                            this.closest('form').submit();">
+                            {{ __('Log Out') }}
                     </x-dropdown-link>
                 </form>
             </x-slot>
@@ -50,7 +57,7 @@
     </div>
 </nav>
 
-<!-- Mobile bottom bar -->
+<!-- Mobile bottom bar --face nav barul din stanga sa se ascunda in stanga-->
 <div class="fixed inset-x-0 bottom-0 flex items-center justify-between px-4 py-4 sm:px-6 transition-transform duration-500 bg-white md:hidden dark:bg-dark-eval-1"
     :class="{
         'translate-y-full': scrollingDown,

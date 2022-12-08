@@ -8,6 +8,10 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\BalancesController;
+use App\Http\Controllers\TradeController;
+use App\Http\Controllers\UserBotController;
+use App\Http\Controllers\UserChart;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -34,6 +38,7 @@ Route::middleware('guest')->group(function () {
                 ->name('password.update');
 });
 
+
 Route::middleware('auth')->group(function () {
     Route::get('verify-email', [EmailVerificationPromptController::class, '__invoke'])
                 ->name('verification.notice');
@@ -53,4 +58,16 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
+
+    // ----------------------------------------- Trades Section --------------------------------------
+
+    Route::get('trades', [TradeController::class, 'index'])
+                ->name('trades');
+
+    Route::get('user-bot', [UserBotController::class, 'index'])
+                ->name('user-bot');
+
+    Route::get('balances', [BalancesController::class, 'index'])
+                ->name('balances');
+
 });

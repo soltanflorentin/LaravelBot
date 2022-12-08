@@ -23,6 +23,9 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    {{-- PowerGrid Data tables --}}
+    @livewireStyles
+    @powerGridStyles
 </head>
 
 <body class="font-sans antialiased">
@@ -59,6 +62,8 @@
             </div>
         </div>
     </div>
+    @livewireScripts
+    @powerGridScripts
 </body>
 
 </html>

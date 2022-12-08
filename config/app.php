@@ -69,7 +69,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Europe/London',
 
     /*
     |--------------------------------------------------------------------------
@@ -211,5 +211,8 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
+
+    'binanace_api_key' => env('BINANCE_KEY'),
+    'binanace_secret_key' => env('BINANCE_SECRET'),
 
 ];
