@@ -26,5 +26,7 @@
     <x-sidebar.link title="Trades" href="/trades"/>
 
     <x-sidebar.link title="Bot" href="/user-bot"/>
+
+    <x-sidebar.link title="Charts" href="/charts"/>
       
 </x-perfect-scrollbar>

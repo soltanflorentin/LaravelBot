@@ -69,7 +69,7 @@
                             <a href="#" class="bg-green-400 text-black py-1 px-2 hover:bg-green-200">
                                 TRADE
                             </a>
-                            <a href="#" class="bg-green-400 text-black py-1 px-2 hover:bg-green-200 ml-4">
+                            <a href="{{ route('charts', ['symbol' => $coin['symbol']]) }}" class="bg-green-400 text-black py-1 px-2 hover:bg-green-200 ml-4">
                                 CHART
                             </a>
                         </td>
