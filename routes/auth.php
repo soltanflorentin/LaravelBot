@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\BalancesController;
+use App\Http\Controllers\ChartsController;
 use App\Http\Controllers\TradeController;
 use App\Http\Controllers\UserBotController;
 use App\Http\Controllers\UserChart;
@@ -69,5 +70,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('balances', [BalancesController::class, 'index'])
                 ->name('balances');
+
+    Route::get('charts/{symbol?}', [ChartsController::class, 'index'])
+                ->name('charts');
 
 });
