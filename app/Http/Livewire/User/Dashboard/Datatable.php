@@ -10,9 +10,9 @@ use Livewire\Component;
 
 class Datatable extends Component
 {
-        public $favoriteCoinsOn = false;
+        public bool $favoriteCoinsOn = false;
         public array $favoriteList = [];
-        public $favoriteChange;
+        public string $favoriteChange = '';
         public ?User $user = null;
 
         protected $rules = [
