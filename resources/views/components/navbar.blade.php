@@ -67,9 +67,8 @@
         <x-heroicon-o-search aria-hidden="true" class="w-6 h-6" />
     </x-button>
 
-    <a href="{{ route('dashboard') }}">
-        <x-application-logo aria-hidden="true" class="w-10 h-10" />
-        <span class="sr-only">K UI</span>
+    <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2">
+        <x-application-logo class="w-20" />
     </a>
 
     <x-button type="button" iconOnly variant="secondary" srText="Open main menu"

@@ -1,7 +1,7 @@
 <main class="flex flex-col items-center flex-1 px-4 pt-6 sm:justify-center">
     <div>
-        <a href="/">
-            <x-application-logo class="w-20 h-20" />
+        <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2">
+            <x-application-logo class="w-20" />
         </a>
     </div>
 
