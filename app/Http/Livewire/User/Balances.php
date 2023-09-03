@@ -25,6 +25,8 @@ class Balances extends Component
         $api = new \Binance\API(config('app.binanace_api_key'), config('app.binanace_secret_key'));
         $api->useServerTime();
 
+        //dd($api->test());
+        //dd($api->balances($api->prices())); //ne da mai complex raspunsul cu tot cu available si in order
         return $api;
     }
 
@@ -33,7 +35,7 @@ class Balances extends Component
         $balances = $this->api->balances();
         foreach($balances as $key => $balance) {
             if($balance['available'] > 0) {
-                array_push($balanta, ['name' => $key, 'amound' => $balance['available'], 'USD_Value' => $this->getUsdtValue($key)]);
+                array_push($balanta, ['name' => $key, 'amound' => $balance['available'], 'USD_Value' => 50]);
             }
         }
 

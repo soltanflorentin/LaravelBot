@@ -21,10 +21,14 @@
 
     <div x-transition x-show="isSidebarOpen || isSidebarHovered" class="text-sm text-gray-500">Choose Action</div>
 
+    <x-sidebar.link title="Portofolio" href="/portofolio"/>
+
     <x-sidebar.link title="Balances" href="/balances"/>
     
     <x-sidebar.link title="Trades" href="/trades"/>
 
     <x-sidebar.link title="Bot" href="/user-bot"/>
+
+    <x-sidebar.link title="Charts" href="/charts"/>
       
 </x-perfect-scrollbar>
