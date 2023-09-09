@@ -42,9 +42,9 @@ class Balances extends Component
         return $balanta;
     }
 
-    public function getUsdtValue($coin) 
-    {
-        $parity = $coin . 'USDT';
-        return $this->api->price('BTCUSDT');
-    }
+    // public function getUsdtValue($coin) 
+    // {
+    //     $parity = $coin . 'USDT';
+    //     return $this->api->price('BTCUSDT');
+    // }
 }
