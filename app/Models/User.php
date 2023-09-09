@@ -46,4 +46,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserFavoriteCoins::class);
     }
+
+    public function getPortfolios()
+    {
+        return $this->hasMany(Portfolio::class);
+    }
 }

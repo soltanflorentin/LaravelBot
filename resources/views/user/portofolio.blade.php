@@ -13,6 +13,8 @@
     </x-slot>
 
     <div class="p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
-        <livewire:user.portofolio.datatable />
+        <livewire:user.portfolio.datatable 
+            :user="auth()->user()"
+        />
     </div>
 </x-app-layout>
