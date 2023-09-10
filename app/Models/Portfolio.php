@@ -30,7 +30,7 @@ class Portfolio extends Model
     {
         $data = [
             'user_id' => 2,
-            'symbol' => 'BTC',
+            'symbol' => 'btc',
             'ledger_main' => 2,
             'ledger_altcoins' => 8,
             'coinbase' => 20.00,

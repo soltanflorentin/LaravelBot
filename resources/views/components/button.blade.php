@@ -26,8 +26,11 @@
         case 'black':
             $variantClasses = 'bg-black text-gray-300 hover:text-white hover:bg-gray-800 focus:ring-black dark:hover:bg-dark-eval-3';
         break;
+        case 'blue':
+            $variantClasses = 'bg-blue-500 text-white hover:bg-blue-600 focus:ring-blue-500';
+        break;
         default:
-            $variantClasses = 'bg-purple-500 text-white hover:bg-purple-600 focus:ring-purple-500';
+            $variantClasses = 'bg-blue-500 text-white hover:bg-blue-600 focus:ring-blue-500';
     }
 
     switch ($size) {

@@ -9,15 +9,17 @@ use Illuminate\Support\Facades\Http;
 
 class Datatable extends Component
 {
-    protected $api;
     public User $user;
+    public ?string $newEntryCoin = '';
+    public array $activeCoins = [];
 
-    public function mount() 
+    public function mount()
     {
         //for testing to fakepopulate portofolio table
-        //Portfolio::createPortfolio(); 
+        //Portfolio::createPortfolio();
 
-        $this->api = $this->initiateBinance();
+        $this->newEntryCoin = $this->coins[0];
+        $this->activeCoins = $this->user->getPortfolios->pluck('symbol')->toArray();
     }
 
     public function render()
@@ -28,35 +30,54 @@ class Datatable extends Component
         ]);
     }
 
-    public function initiateBinance() 
-    {
-        $api = new \Binance\API(config('app.binanace_api_key'), config('app.binanace_secret_key'));
-        $api->useServerTime();
-
-        //dd($api->test());
-        //dd($api->balances($api->prices())); //ne da mai complex raspunsul cu tot cu available si in order
-        return $api;
-    }
-
-    public function getPortfolio() 
+    public function getPortfolio()
     {
         return $this->user->getPortfolios;
     }
 
-    // public function getAllCoins() 
-    // {
-    //     $coinsRequest = Http::get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false');
-        
-    //     $allCoins = $coinsRequest->collect();
+    public function getCoinsProperty()
+    {
+        $coins = $this->getAllCoins(200)->pluck('symbol')->toArray();
 
-    //     return $allCoins;  
-    // }
+        //dd(array_diff($coins, $this->activeCoins));
+        return array_diff($coins, $this->activeCoins);
+    }
 
-    // public function getUsdtValue($coin) 
+    public function addNewCoin()
+    {
+        Portfolio::create(['symbol' => $this->newEntryCoin, 'user_id' => $this->user->id]);
+
+        $this->render();
+    }
+
+    public function getAllCoins($numberOfCoins)
+    {
+        $coinsRequest = Http::get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page='. $numberOfCoins .'&page=1&sparkline=false');
+
+        $allCoins = $coinsRequest->collect();
+
+        return $allCoins;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // public function getUsdtValue($coin)
     // {
     //     $parity = $coin . 'USDT';
     //     return $this->api->price('BTCUSDT');
     // }
 
-    
+
 }
