@@ -11,7 +11,7 @@ class SellTrade extends Model
 
     protected $fillable = ['amount', 'sell_price', 'sell_profit', 'buy_id', 'usd_value'];
 
-    public function buy_trades() 
+    public function buy_trades()
     {
         return $this->belongsTo(BuyTrade::class);
     }

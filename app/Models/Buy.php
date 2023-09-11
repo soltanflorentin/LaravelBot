@@ -15,12 +15,12 @@ class Buy extends Model
     'avg_value',
     'amount_left'];
 
-    public function sellTrades() 
+    public function sellTrades()
     {
         return $this->hasMany(SellTrade::class);
     }
 
-    public function buyTrades() 
+    public function buyTrades()
     {
         return $this->hasMany(BuyTrade::class);
     }

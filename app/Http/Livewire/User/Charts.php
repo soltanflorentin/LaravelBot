@@ -10,7 +10,8 @@ class Charts extends Component
     public $viewSymbol;
     public $active = false;
 
-    public function mount() {
+    public function mount()
+    {
         $this->viewSymbol = "BINANCE:" . $this->symbol . "USDT";
     }
 

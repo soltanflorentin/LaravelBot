@@ -4,14 +4,18 @@
             <h2 class="text-xl font-semibold leading-tight">
                 {{ __('Chart') }}
             </h2>
-            <x-button target="_blank" href="https://github.com/kamona-wd/kui-laravel-breeze" variant="black"
-                class="justify-center max-w-xs gap-2">
-                
+            <x-button
+                target="_blank"
+                href="https://github.com/kamona-wd/kui-laravel-breeze"
+                variant="black"
+                class="max-w-xs justify-center gap-2"
+            >
+
             </x-button>
         </div>
     </x-slot>
 
-    <div class="p-6 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
+    <div class="overflow-hidden rounded-md bg-white p-6 shadow-md dark:bg-dark-eval-1">
         <livewire:user.dashboard.datatable />
     </div>
 </x-app-layout>
