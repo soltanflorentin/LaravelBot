@@ -13,6 +13,10 @@ class Datatable extends Component
     public ?string $newEntryCoin = '';
     public array $activeCoins = [];
 
+    protected $listeners = [
+        'refreshDatatable' => '$refresh',
+    ];
+
     public function mount()
     {
         //for testing to fakepopulate portofolio table
@@ -47,7 +51,14 @@ class Datatable extends Component
     {
         Portfolio::create(['symbol' => $this->newEntryCoin, 'user_id' => $this->user->id]);
 
-        $this->render();
+        $this->emit('refreshDatatable');
+    }
+
+    public function deleteItem(Portfolio $item)
+    {
+        $item->delete();
+
+        $this->emit('refreshDatatable');
     }
 
     public function getAllCoins($numberOfCoins)

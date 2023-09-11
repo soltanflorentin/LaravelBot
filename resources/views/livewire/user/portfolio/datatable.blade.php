@@ -201,10 +201,13 @@
                                 </td>
                                 <td class="whitespace-no-wrap border-b border-gray-200 px-6 py-4">
                                     <div class="flex items-center justify-center text-sm leading-5 text-slate-500">
-                                        <x-heroicon-o-trash
-                                            aria-hidden="true"
-                                            class="ml-1 h-4 w-4 text-red-400"
-                                        />
+
+                                        <button wire:click="deleteItem({{ $portfolio->id }})">
+                                            <x-heroicon-o-trash
+                                                aria-hidden="true"
+                                                class="ml-1 h-4 w-4 text-red-400"
+                                            />
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
