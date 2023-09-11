@@ -8,7 +8,7 @@ class Balances extends Component
 {
     protected $api;
 
-    public function mount() 
+    public function mount()
     {
         $this->api = $this->initiateBinance();
     }
@@ -20,7 +20,7 @@ class Balances extends Component
         ]);
     }
 
-    public function initiateBinance() 
+    public function initiateBinance()
     {
         $api = new \Binance\API(config('app.binanace_api_key'), config('app.binanace_secret_key'));
         $api->useServerTime();
@@ -30,7 +30,8 @@ class Balances extends Component
         return $api;
     }
 
-    public function getBalances() {
+    public function getBalances()
+    {
         $balanta = [];
         $balances = $this->api->balances();
         foreach($balances as $key => $balance) {
@@ -42,9 +43,10 @@ class Balances extends Component
         return $balanta;
     }
 
-    // public function getUsdtValue($coin) 
+    // public function getUsdtValue($coin)
     // {
     //     $parity = $coin . 'USDT';
     //     return $this->api->price('BTCUSDT');
     // }
+
 }

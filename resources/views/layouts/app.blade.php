@@ -43,7 +43,10 @@
 
 <body class="font-sans antialiased">
     <div
-        x-data="{ isSidebarOpen: true }"
+        x-data="{
+            isSidebarOpen: true,
+            isDarkMode: false
+        }"
         {{-- x-data="mainState" --}}
         :class="{ dark: isDarkMode }"
         @resize.window="handleWindowResize"

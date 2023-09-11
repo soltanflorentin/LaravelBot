@@ -13,13 +13,13 @@ class Datatable extends Component
     public $buys;
     public $allCoins;
 
-    public function mount() 
-        {
-          
-           $this->buys = Buy::all();
-           $this->allCoins = $this->getAllCoins();
-           //$this->getIdBasedOnSymbol('btc');
-        }
+    public function mount()
+    {
+
+        $this->buys = Buy::all();
+        $this->allCoins = $this->getAllCoins();
+        //$this->getIdBasedOnSymbol('btc');
+    }
 
     public function render()
     {
@@ -28,7 +28,7 @@ class Datatable extends Component
         ]);
     }
 
-    public function getAllCoins() 
+    public function getAllCoins()
     {
         $coinsRequest = Http::get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=50&page=1&sparkline=false');
         $allCoins = $coinsRequest->collect()->pluck('id', 'symbol');
@@ -36,7 +36,7 @@ class Datatable extends Component
         return $allCoins;
     }
 
-    public function getCoinValue($coin) 
+    public function getCoinValue($coin)
     {
         $coinRequest = Http::get('https://api.coingecko.com/api/v3/simple/price?ids='. $coin . '&vs_currencies=usd');
         $coin = json_decode($coinRequest);
@@ -44,12 +44,12 @@ class Datatable extends Component
         return $coin->bitcoin->usd;
     }
 
-    public function getIdBasedOnSymbol($symbol) 
+    public function getIdBasedOnSymbol($symbol)
     {
-      
+
         foreach($this->allCoins as $key => $id) {
             if($symbol == $key) {
-                
+
                 return $id;
             }
         }
