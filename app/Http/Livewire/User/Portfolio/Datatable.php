@@ -30,7 +30,7 @@ class Datatable extends Component
 
         $this->activeCoins = $this->user->getPortfolios->pluck('symbol')->toArray();
 
-        $this->newEntryCoin = $this->getCoinsProperty()[0];
+        $this->setNewEntryCoin();
     }
 
     public function render(): View
@@ -59,6 +59,13 @@ class Datatable extends Component
         $this->emit('refreshDatatable');
     }
 
+    public function setNewEntryCoin(): void
+    {
+        $coin = $this->getCoinsProperty();
+
+        $this->newEntryCoin = reset($coin);
+    }
+
 
     public function getAllCoins($numberOfCoins)
     {
@@ -74,7 +81,6 @@ class Datatable extends Component
     {
         $coins = Cookie::get('selectable_coins_symbol_portfolio');
         $activeCoins = $this->user->getPortfolios->pluck('symbol')->toArray();
-        //dd(json_decode($coins), $activeCoins);
 
         return array_diff(json_decode($coins), $activeCoins);
 
