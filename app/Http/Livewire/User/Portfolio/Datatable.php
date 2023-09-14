@@ -14,6 +14,8 @@ class Datatable extends Component
     public User $user;
     public ?string $newEntryCoin = '';
     public array $activeCoins = [];
+    public $amount = '';
+    public $walletToEdit = '';
 
     protected $listeners = [
         'refreshDatatable' => '$refresh',
@@ -50,6 +52,11 @@ class Datatable extends Component
         Portfolio::create(['symbol' => $this->newEntryCoin, 'user_id' => $this->user->id]);
 
         $this->emit('refreshDatatable');
+    }
+
+    public function saveAmount()
+    {
+        dd($this->amount);
     }
 
     public function deleteItem(Portfolio $item): void

@@ -1,4 +1,4 @@
-<div class="relative">
+<div class="">
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 class="text-xl font-semibold leading-tight">
@@ -8,10 +8,12 @@
     </x-slot>
     <div
         class="flex flex-col"
-        x-data="{ newEntry: false }"
+        x-data="{
+            newEntry: false,
+            openEditModal: false,
+        }"
     >
         <div class="-my-2 overflow-x-auto py-2 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-
             <div
                 class="inline-block min-w-full overflow-hidden border-b border-gray-200 align-middle shadow sm:rounded-lg">
                 <div class="flex h-10 items-center gap-5">
@@ -52,7 +54,6 @@
                         </x-button>
                     </div>
                 </div>
-
                 <table class="min-w-full">
                     <thead>
                         <tr>
@@ -115,7 +116,7 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white">
-                        @foreach ($portfolios as $portfolio)
+                        @forelse ($portfolios as $portfolio)
                             <tr>
                                 <td class="whitespace-no-wrap border-b border-gray-200 px-6 py-4">
                                     <div class="flex items-center gap-1">
@@ -131,73 +132,118 @@
                                 <td class="whitespace-no-wrap border-b border-gray-200 px-6 py-4">
                                     <div class="flex items-center justify-center text-sm leading-5 text-slate-500">
                                         <p>100</p>
-
-                                        <button>
-                                            <x-heroicon-o-pencil
-                                                aria-hidden="true"
-                                                class="ml-1 h-4 w-4 text-green-400"
-                                            />
-                                        </button>
                                     </div>
                                 </td>
                                 <td class="whitespace-no-wrap border-b border-gray-200 px-6 py-4">
                                     <div class="flex items-center justify-center text-sm leading-5 text-slate-500">
                                         <p>100</p>
-                                        <button>
-                                            <x-heroicon-o-pencil
-                                                aria-hidden="true"
-                                                class="ml-1 h-4 w-4 text-green-400"
-                                            />
-                                        </button>
                                     </div>
                                 </td>
                                 <td class="whitespace-no-wrap border-b border-gray-200 px-6 py-4">
                                     <div class="flex items-center justify-center text-sm leading-5 text-slate-500">
                                         <p>100</p>
-                                        <button>
-                                            <x-heroicon-o-pencil
-                                                aria-hidden="true"
-                                                class="ml-1 h-4 w-4 text-green-400"
-                                            />
-                                        </button>
                                     </div>
                                 </td>
 
                                 <td
                                     class="whitespace-no-wrap border-b border-gray-200 px-6 py-4 text-sm leading-5 text-gray-500">
-                                    {{ $portfolio->ledger_main }}
+                                    <div class="">
+                                        <button
+                                            type="button"
+                                            @click="Livewire.emit('edit-wallet-amount', {{ $portfolio }})"
+                                        >
+                                            {{ $portfolio->ledger_main ?? 0 }}
+                                        </button>
+                                    </div>
                                 </td>
                                 <td
                                     class="whitespace-no-wrap border-b border-gray-200 px-6 py-4 text-sm leading-5 text-gray-500">
-                                    {{ $portfolio->ledger_altcoins }}
+                                    <div class="">
+                                        <button
+                                            type="button"
+                                            wire:click="$set('walletToEdit', 'ledger_altcoins')"
+                                            @click="openEditModal = true"
+                                        >
+                                            {{ $portfolio->ledger_altcoins ?? 0 }}
+                                        </button>
+                                    </div>
                                 </td>
                                 <td
                                     class="whitespace-no-wrap border-b border-gray-200 px-6 py-4 text-sm leading-5 text-gray-500">
-                                    {{ $portfolio->coinbase }}
+                                    <div class="">
+                                        <button
+                                            type="button"
+                                            @click="openEditModal = true"
+                                        >
+                                            {{ $portfolio->coinbase ?? 0 }}
+                                        </button>
+                                    </div>
                                 </td>
                                 <td
                                     class="whitespace-no-wrap border-b border-gray-200 px-6 py-4 text-sm leading-5 text-gray-500">
-                                    {{ $portfolio->binance }}
+                                    <div class="">
+                                        <button
+                                            type="button"
+                                            @click="openEditModal = true"
+                                        >
+                                            {{ $portfolio->binance ?? 0 }}
+                                        </button>
+                                    </div>
                                 </td>
                                 <td
                                     class="whitespace-no-wrap border-b border-gray-200 px-6 py-4 text-sm leading-5 text-gray-500">
-                                    {{ $portfolio->multivers_x }}
+                                    <div class="">
+                                        <button
+                                            type="button"
+                                            @click="openEditModal = true"
+                                        >
+                                            {{ $portfolio->multivers_x ?? 0 }}
+                                        </button>
+                                    </div>
                                 </td>
                                 <td
                                     class="whitespace-no-wrap border-b border-gray-200 px-6 py-4 text-sm leading-5 text-gray-500">
-                                    {{ $portfolio->crypto_com }}
+                                    <div class="">
+                                        <button
+                                            type="button"
+                                            @click="openEditModal = true"
+                                        >
+                                            {{ $portfolio->crypto_com ?? 0 }}
+                                        </button>
+                                    </div>
                                 </td>
                                 <td
                                     class="whitespace-no-wrap border-b border-gray-200 px-6 py-4 text-sm leading-5 text-gray-500">
-                                    {{ $portfolio->metamask }}
+                                    <div class="">
+                                        <button
+                                            type="button"
+                                            @click="openEditModal = true"
+                                        >
+                                            {{ $portfolio->metamask ?? 0 }}
+                                        </button>
+                                    </div>
                                 </td>
                                 <td
                                     class="whitespace-no-wrap border-b border-gray-200 px-6 py-4 text-sm leading-5 text-gray-500">
-                                    {{ $portfolio->trust_wallet }}
+                                    <div class="">
+                                        <button
+                                            type="button"
+                                            @click="openEditModal = true"
+                                        >
+                                            {{ $portfolio->trust_wallet ?? 0 }}
+                                        </button>
+                                    </div>
                                 </td>
                                 <td
                                     class="whitespace-no-wrap border-b border-gray-200 px-6 py-4 text-sm leading-5 text-gray-500">
-                                    {{ $portfolio->etoro }}
+                                    <div class="">
+                                        <button
+                                            type="button"
+                                            @click="openEditModal = true"
+                                        >
+                                            {{ $portfolio->etoro ?? 0 }}
+                                        </button>
+                                    </div>
                                 </td>
                                 <td class="whitespace-no-wrap border-b border-gray-200 px-6 py-4">
                                     <div class="flex items-center justify-center text-sm leading-5 text-slate-500">
@@ -211,7 +257,14 @@
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <h6 class="mb-3 text-center text-lg italic text-red-400">
+                                    There are no coins in your portfolio.
+                                </h6>
+                            </tr>
+                        @endforelse
+
                     </tbody>
                 </table>
             </div>
