@@ -6,16 +6,18 @@ use App\Models\User;
 use Livewire\Component;
 use App\Models\Portfolio;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Cache;
 
 class Datatable extends Component
 {
     public User $user;
     public ?string $newEntryCoin = '';
     public array $activeCoins = [];
-    public $amount = '';
     public $walletToEdit = '';
+    public $fullCoinsMarket = '';
+    public array $usdValuesList = [];
+    public array $amountList = [];
 
     protected $listeners = [
         'refreshDatatable' => '$refresh',
@@ -23,14 +25,21 @@ class Datatable extends Component
 
     public function mount()
     {
-        //for testing to fake populate portofolio table
-        //Portfolio::createPortfolio();
-
-        if(!Cookie::get('selectable_coins_symbol_portfolio')) {
-            \Cookie::queue(\Cookie::forever('selectable_coins_symbol_portfolio', $this->getCoinsForCookie(), 10000));
+        if(!Cache::get('selectable_coins_symbol_portfolio')) {
+            Cache::put('selectable_coins_symbol_portfolio', $this->getCoinsSymbolForCache(), 10000);
         }
 
+        if(!Cache::get('full_coins_market')) {
+            Cache::put('full_coins_market', $this->getAllCoinsSymbolPriceArray(), 5000);
+        }
+
+        $this->fullCoinsMarket = Cache::get('full_coins_market');
+
         $this->activeCoins = $this->user->getPortfolios->pluck('symbol')->toArray();
+
+        $this->amountList = $this->getAmountList();
+
+        //$this->usdValuesList = $this->getUsdValuesList();
 
         $this->setNewEntryCoin();
     }
@@ -47,16 +56,36 @@ class Datatable extends Component
         return $this->user->getPortfolios;
     }
 
+    // public function getUsdValuesList()
+    // {
+
+    // }
+
+    public function getAmountList()
+    {
+        $portfolio = $this->user->getPortfolios->map(function ($item) {
+            return [
+                'symbol' => $item->symbol,
+                'sum' =>  $item->ledger_main +
+                $item->ledger_altcoins +
+                $item->coinbase +
+                $item->binance +
+                $item->multivers_x +
+                $item->crypto_com +
+                $item->metamask +
+                $item->trust_wallet +
+                $item->etoro
+            ];
+        })->pluck('sum', 'symbol')->toArray();
+
+        return $portfolio;
+    }
+
     public function addNewCoin(): void
     {
         Portfolio::create(['symbol' => $this->newEntryCoin, 'user_id' => $this->user->id]);
 
         $this->emit('refreshDatatable');
-    }
-
-    public function saveAmount()
-    {
-        dd($this->amount);
     }
 
     public function deleteItem(Portfolio $item): void
@@ -80,42 +109,52 @@ class Datatable extends Component
 
         $allCoins = $coinsRequest->collect();
 
+        if(isset($allCoins['status'])) {
+            dd('error CoinGeko try later');
+        }
         return $allCoins;
+    }
+
+    public function getAllCoinsSymbolPriceArray()
+    {
+        $allCoins = $this->getAllCoins(200);
+
+        return $allCoins->pluck('current_price', 'symbol')->toArray();
     }
 
 
     public function getCoinsProperty(): array
     {
-        $coins = Cookie::get('selectable_coins_symbol_portfolio');
+        $coins = Cache::get('selectable_coins_symbol_portfolio');
+
         $activeCoins = $this->user->getPortfolios->pluck('symbol')->toArray();
 
         return array_diff(json_decode($coins), $activeCoins);
 
     }
 
-    public function getCoinsForCookie()
+    public function getCoinsSymbolForCache()
     {
         $coins = $this->getAllCoins(200)->pluck('symbol')->toArray();
 
         return json_encode($coins);
     }
 
-    public function deleteCookie(): void
+    public function refreshMarketCoins(): void
     {
-        \Cookie::queue(\Cookie::forget('selectable_coins_symbol_portfolio'));
+        $allCoins = $this->getAllCoinsSymbolPriceArray();
+
+        Cache::put('full_coins_market', $allCoins, 1000);
 
         $this->emit('refreshDatatable');
     }
 
+    public function deleteSelectableSymbolCoinsCache(): void
+    {
+        Cache::forget('selectable_coins_symbol_portfolio');
 
-
-
-
-
-
-
-
-
+        $this->emit('refreshDatatable');
+    }
 
 
 

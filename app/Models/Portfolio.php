@@ -22,27 +22,4 @@ class Portfolio extends Model
         'trust_wallet',
         'etoro',
     ];
-
-
-
-// for testing to fake pupulate the table
-    public static function createPortfolio()
-    {
-        $data = [
-            'user_id' => 2,
-            'symbol' => 'btc',
-            'ledger_main' => 2,
-            'ledger_altcoins' => 8,
-            'coinbase' => 20.00,
-            'binance' => null,
-            'multivers_x' => 15.00,
-            'crypto_com' => 5,
-            'metamask' => 120.00,
-            'trust_wallet' => null,
-            'etoro' => 25.00,
-        ];
-
-        return self::create($data);
-    }
 }
-
