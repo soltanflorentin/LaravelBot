@@ -14,6 +14,4 @@
     <div class="overflow-hidden rounded-md bg-white p-6 shadow-md dark:bg-dark-eval-1">
         <livewire:user.portfolio.datatable :user="auth()->user()" />
     </div>
-
-    <livewire:user.portfolio.modals.edit-wallet-amount />
 </x-app-layout>

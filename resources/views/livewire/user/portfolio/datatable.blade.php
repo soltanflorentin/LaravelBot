@@ -1,4 +1,7 @@
-<div class="">
+<div x-data="{
+    newEntry: false,
+    openEditModal: @entangle('openEditModal'),
+}">
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 class="text-xl font-semibold leading-tight">
@@ -6,13 +9,7 @@
             </h2>
         </div>
     </x-slot>
-    <div
-        class="flex flex-col"
-        x-data="{
-            newEntry: false,
-            openEditModal: false,
-        }"
-    >
+    <div class="flex flex-col">
         <div class="-my-2 overflow-x-auto py-2 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
             <div
                 class="inline-block min-w-full overflow-hidden border-b border-gray-200 align-middle shadow sm:rounded-lg">
@@ -151,118 +148,19 @@
                                         </p>
                                     </div>
                                 </td>
-
-                                <td
-                                    class="whitespace-no-wrap border-b border-gray-200 px-6 py-4 text-center text-sm leading-5 text-gray-500">
-                                    <div class="">
-                                        <button
-                                            type="button"
-                                            @click="Livewire.emit('edit-wallet-amount', {{ json_encode([
-                                                'portfolioId' => $portfolio->id,
-                                                'wallet' => 'ledger_main',
-                                                'amountValue' => $portfolio->ledger_main ?? 0,
-                                            ]) }})"
-                                        >
-                                            {{ $portfolio->ledger_main ?? 0 }}
-                                        </button>
-                                    </div>
-                                </td>
-                                <td
-                                    class="whitespace-no-wrap border-b border-gray-200 px-6 py-4 text-center text-sm leading-5 text-gray-500">
-                                    <div class="">
-                                        <button
-                                            type="button"
-                                            @click="Livewire.emit('edit-wallet-amount', {{ json_encode([
-                                                'portfolioId' => $portfolio->id,
-                                                'wallet' => 'ledger_altcoins',
-                                                'amountValue' => $portfolio->ledger_altcoins ?? 0,
-                                            ]) }})"
-                                        >
-                                            {{ $portfolio->ledger_altcoins ?? 0 }}
-                                        </button>
-                                    </div>
-                                </td>
-                                <td
-                                    class="whitespace-no-wrap border-b border-gray-200 px-6 py-4 text-center text-sm leading-5 text-gray-500">
-                                    <div class="">
-                                        <button
-                                            type="button"
-                                            @click="Livewire.emit('edit-wallet-amount', {{ json_encode([
-                                                'portfolioId' => $portfolio->id,
-                                                'wallet' => 'coinbase',
-                                                'amountValue' => $portfolio->coinbase ?? 0,
-                                            ]) }})"
-                                        >
-                                            {{ $portfolio->coinbase ?? 0 }}
-                                        </button>
-                                    </div>
-                                </td>
-                                <td
-                                    class="whitespace-no-wrap border-b border-gray-200 px-6 py-4 text-center text-sm leading-5 text-gray-500">
-                                    <div class="">
-                                        <button
-                                            type="button"
-                                            @click="openEditModal = true"
-                                        >
-                                            {{ $portfolio->binance ?? 0 }}
-                                        </button>
-                                    </div>
-                                </td>
-                                <td
-                                    class="whitespace-no-wrap border-b border-gray-200 px-6 py-4 text-center text-sm leading-5 text-gray-500">
-                                    <div class="">
-                                        <button
-                                            type="button"
-                                            @click="openEditModal = true"
-                                        >
-                                            {{ $portfolio->multivers_x ?? 0 }}
-                                        </button>
-                                    </div>
-                                </td>
-                                <td
-                                    class="whitespace-no-wrap border-b border-gray-200 px-6 py-4 text-center text-sm leading-5 text-gray-500">
-                                    <div class="">
-                                        <button
-                                            type="button"
-                                            @click="openEditModal = true"
-                                        >
-                                            {{ $portfolio->crypto_com ?? 0 }}
-                                        </button>
-                                    </div>
-                                </td>
-                                <td
-                                    class="whitespace-no-wrap border-b border-gray-200 px-6 py-4 text-center text-sm leading-5 text-gray-500">
-                                    <div class="">
-                                        <button
-                                            type="button"
-                                            @click="openEditModal = true"
-                                        >
-                                            {{ $portfolio->metamask ?? 0 }}
-                                        </button>
-                                    </div>
-                                </td>
-                                <td
-                                    class="whitespace-no-wrap border-b border-gray-200 px-6 py-4 text-center text-sm leading-5 text-gray-500">
-                                    <div class="">
-                                        <button
-                                            type="button"
-                                            @click="openEditModal = true"
-                                        >
-                                            {{ $portfolio->trust_wallet ?? 0 }}
-                                        </button>
-                                    </div>
-                                </td>
-                                <td
-                                    class="whitespace-no-wrap border-b border-gray-200 px-6 py-4 text-center text-sm leading-5 text-gray-500">
-                                    <div class="">
-                                        <button
-                                            type="button"
-                                            @click="openEditModal = true"
-                                        >
-                                            {{ $portfolio->etoro ?? 0 }}
-                                        </button>
-                                    </div>
-                                </td>
+                                @foreach ($walletsList as $wallet)
+                                    <td
+                                        class="whitespace-no-wrap border-b border-gray-200 px-6 py-4 text-center text-sm leading-5 text-gray-500">
+                                        <div>
+                                            <button
+                                                type="button"
+                                                wire:click="setAmountDetailsForEdit('{{ $portfolio->id }}', '{{ $wallet }}')"
+                                            >
+                                                {{ $portfolio->$wallet ?? 0 }}
+                                            </button>
+                                        </div>
+                                    </td>
+                                @endforeach
                                 <td class="whitespace-no-wrap border-b border-gray-200 px-6 py-4 text-center">
                                     <div class="flex items-center justify-center text-sm leading-5 text-slate-500">
 
@@ -282,10 +180,55 @@
                                 </h6>
                             </tr>
                         @endforelse
-
                     </tbody>
                 </table>
             </div>
+        </div>
+    </div>
+
+    <div
+        x-cloak
+        x-show="openEditModal"
+        class="fixed left-0 top-0 z-10 flex h-full w-full items-center justify-center bg-gray-800 bg-opacity-40"
+    >
+        <div class="relative w-64 rounded-lg bg-white p-6">
+            <form
+                wire:submit.prevent="updateAmount"
+                @click.away="openEditModal = false"
+            >
+                <div class="mb-4">
+                    <h6 class="mb-2 block text-center font-bold text-gray-700">
+                        {{ ucwords(str_replace('_', ' ', $activeWallet)) }}
+                    </h6>
+                    <label
+                        for="amount"
+                        class="mb-2 block font-bold text-gray-700"
+                    >Insert amount:</label>
+                    <input
+                        id="input-{{ $activeWallet }}"
+                        wire:model.debounce.500ms="amountValue"
+                        type="text"
+                        name="amountValue"
+                        class="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                    >
+                </div>
+                <div>
+                    @error($amountValue)
+                        <span class="text-sm text-red-500">
+                            {{ \Str::replace('form.', '', $message) }}
+                        </span>
+                    @enderror
+                </div>
+                <div class="text-center">
+                    <button
+                        type="submit"
+                        @click="openEditModal = false"
+                        class="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+                    >
+                        Save
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

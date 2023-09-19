@@ -5,23 +5,34 @@ namespace App\Http\Livewire\User\Portfolio;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\Portfolio;
-use Illuminate\Support\Facades\Http;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 
 class Datatable extends Component
 {
     public User $user;
+    public ?Portfolio $portfolio = null;
     public ?string $newEntryCoin = '';
     public array $activeCoins = [];
-    public $walletToEdit = '';
+    public array $walletsList = [];
     public $fullCoinsMarket = '';
     public array $usdValuesList = [];
     public array $amountList = [];
+    public string $activeWallet = '';
+    public $amountValue = 0;
+    public $openEditModal = false;
 
     protected $listeners = [
         'refreshDatatable' => '$refresh',
     ];
+
+    public function rules(): array
+    {
+        return [
+            'amountValue' => 'numeric|max:255'
+        ];
+    }
 
     public function mount()
     {
@@ -39,13 +50,16 @@ class Datatable extends Component
 
         $this->amountList = $this->getAmountList();
 
-        //$this->usdValuesList = $this->getUsdValuesList();
+        $this->setWalletList();
 
         $this->setNewEntryCoin();
+
+        //$this->usdValuesList = $this->getUsdValuesList();
     }
 
     public function render(): View
     {
+
         return view('livewire.user.portfolio.datatable', [
             'portfolios' => $this->getPortfolio(),
         ]);
@@ -102,6 +116,15 @@ class Datatable extends Component
         $this->newEntryCoin = reset($coin);
     }
 
+    public function setWalletList(): void
+    {
+        $portfolio = Portfolio::first();
+
+        $walletsList = array_keys($portfolio->getOriginal());
+
+        $this->walletsList = array_slice($walletsList, 3, 9);
+    }
+
 
     public function getAllCoins($numberOfCoins)
     {
@@ -156,6 +179,36 @@ class Datatable extends Component
         $this->emit('refreshDatatable');
     }
 
+    public function setAmountDetailsForEdit(Portfolio $portfolio, $walletName = 'etoro'): void
+    {
+        $this->openEditModal = true;
+        $this->activeWallet = $walletName;
+        $this->portfolio = $portfolio;
+        $this->amountValue = $portfolio->$walletName ?? 0;
+
+    }
+
+    public function updateAmount(): void
+    {
+        $this->validate();
+
+        $this->portfolio->fill([
+            $this->activeWallet => $this->amountValue
+        ]);
+
+        $this->portfolio->save();
+
+        $this->resetValues();
+
+        $this->emit('refreshDatatable');
+    }
+
+    public function resetValues(): void
+    {
+        $this->portfolio = null;
+        $this->activeWallet = '';
+        $this->amountValue = 0;
+    }
 
 
 
