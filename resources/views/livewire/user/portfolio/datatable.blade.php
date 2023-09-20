@@ -120,7 +120,7 @@
                     </thead>
                     <tbody class="bg-white">
                         @forelse ($portfolios as $portfolio)
-                            <tr>
+                            <tr class="hover:bg-slate-100">
                                 <td class="whitespace-no-wrap border-b border-gray-200 px-6 py-4">
                                     <div class="flex items-center justify-center gap-1">
                                         {{-- <div class="flex-shrink-0 w-10 h-10">
@@ -156,7 +156,8 @@
                                                 type="button"
                                                 wire:click="setAmountDetailsForEdit('{{ $portfolio->id }}', '{{ $wallet }}')"
                                             >
-                                                {{ $portfolio->$wallet ?? 0 }}
+                                                {{ $portfolio->$wallet ? rtrim(sprintf('%.6f', $portfolio->$wallet), '0') : 0 }}
+
                                             </button>
                                         </div>
                                     </td>
@@ -185,7 +186,6 @@
             </div>
         </div>
     </div>
-
     <div
         x-cloak
         x-show="openEditModal"

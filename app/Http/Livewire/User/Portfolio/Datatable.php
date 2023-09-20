@@ -30,7 +30,7 @@ class Datatable extends Component
     public function rules(): array
     {
         return [
-            'amountValue' => 'numeric|max:255'
+            'amountValue' => 'numeric|max:12'
         ];
     }
 
@@ -99,6 +99,8 @@ class Datatable extends Component
     {
         Portfolio::create(['symbol' => $this->newEntryCoin, 'user_id' => $this->user->id]);
 
+
+
         $this->emit('refreshDatatable');
     }
 
@@ -120,7 +122,11 @@ class Datatable extends Component
     {
         $portfolio = Portfolio::first();
 
-        $walletsList = array_keys($portfolio->getOriginal());
+        if($portfolio) {
+            $walletsList = array_keys($portfolio->getOriginal());
+        } else {
+            $walletsList = [];
+        }
 
         $this->walletsList = array_slice($walletsList, 3, 9);
     }
@@ -190,7 +196,7 @@ class Datatable extends Component
 
     public function updateAmount(): void
     {
-        $this->validate();
+        //$this->validate();
 
         $this->portfolio->fill([
             $this->activeWallet => $this->amountValue
