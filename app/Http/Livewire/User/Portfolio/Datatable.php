@@ -6,6 +6,7 @@ use App\Models\User;
 use Livewire\Component;
 use App\Models\Portfolio;
 use Illuminate\View\View;
+use App\Services\PortfolioService;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 
@@ -13,6 +14,7 @@ class Datatable extends Component
 {
     public User $user;
     public ?Portfolio $portfolio = null;
+    public ?PortfolioService $service = null;
     public ?string $newEntryCoin = '';
     public array $activeCoins = [];
     public array $walletsList = [];
@@ -26,6 +28,11 @@ class Datatable extends Component
     protected $listeners = [
         'refreshDatatable' => '$refresh',
     ];
+
+    public function __construct()
+    {
+        //$this->service = new PortfolioService();
+    }
 
     public function rules(): array
     {
@@ -53,13 +60,10 @@ class Datatable extends Component
         $this->setWalletList();
 
         $this->setNewEntryCoin();
-
-        //$this->usdValuesList = $this->getUsdValuesList();
     }
 
     public function render(): View
     {
-
         return view('livewire.user.portfolio.datatable', [
             'portfolios' => $this->getPortfolio(),
         ]);
@@ -69,11 +73,6 @@ class Datatable extends Component
     {
         return $this->user->getPortfolios;
     }
-
-    // public function getUsdValuesList()
-    // {
-
-    // }
 
     public function getAmountList()
     {
@@ -98,8 +97,6 @@ class Datatable extends Component
     public function addNewCoin(): void
     {
         Portfolio::create(['symbol' => $this->newEntryCoin, 'user_id' => $this->user->id]);
-
-
 
         $this->emit('refreshDatatable');
     }
@@ -134,7 +131,7 @@ class Datatable extends Component
 
     public function getAllCoins($numberOfCoins)
     {
-        $coinsRequest = Http::get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page='. $numberOfCoins .'&page=1&sparkline=false');
+        $coinsRequest = Http::get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=' . $numberOfCoins . '&page=1&sparkline=false');
 
         $allCoins = $coinsRequest->collect();
 
@@ -185,7 +182,7 @@ class Datatable extends Component
         $this->emit('refreshDatatable');
     }
 
-    public function setAmountDetailsForEdit(Portfolio $portfolio, $walletName = 'etoro'): void
+    public function setAmountDetailsForEdit(Portfolio $portfolio, $walletName): void
     {
         $this->openEditModal = true;
         $this->activeWallet = $walletName;
@@ -196,13 +193,13 @@ class Datatable extends Component
 
     public function updateAmount(): void
     {
-        //$this->validate();
+        $this->validate();
 
         $this->portfolio->fill([
             $this->activeWallet => $this->amountValue
         ]);
 
-        $this->portfolio->save();
+        //$this->portfolio->save();
 
         $this->resetValues();
 
@@ -214,7 +211,16 @@ class Datatable extends Component
         $this->portfolio = null;
         $this->activeWallet = '';
         $this->amountValue = 0;
+        $this->openEditModal = false;
     }
+
+    // Use this sintax to reset variables
+    // $this->reset([
+    //     'user',
+    //     'isOpen',
+    //     'confirmation',
+    //     'deletePermanently',
+    // ]);
 
 
 
